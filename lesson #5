@@ -1,1 +1,256 @@
 
+1. Написать программу, которая будет складывать, вычитать, умножать или
+делить два числа. Числа и знак операции вводятся пользователем. После
+выполнения вычисления программа не должна завершаться, а должна запрашивать
+новые данные для вычислений. Завершение программы должно выполняться при вводе
+символа '0' в качестве знака операции. Если пользователь вводит неверный знак
+(не "0", "+", "-", "*", "/"), то программа должна сообщать ему об ошибке и
+снова запрашивать знак операции. Также сообщать пользователю о невозможности
+деления на ноль, если он ввел 0 в качестве делителя.'''
+
+
+while True:
+    try:
+        number1, operation, number2 = [
+                i for i in
+                input(
+                    'Введите математическое выражение (число операнд число): '
+                    ).split()
+                ]
+    except ValueError:
+        print('Неправильный ввод.')
+        continue
+    number1 = int(number1)
+    number2 = int(number2)
+
+    if operation == '0':
+        break
+    elif operation == '+':
+        print(f'{number1} {operation} {number2} = {number1 + number2}')
+    elif operation == '-':
+        print(f'{number1} {operation} {number2} = {number1 - number2}')
+    elif operation == '*':
+        print(f'{number1} {operation} {number2} = {number1 * number2}')
+    elif operation == '/':
+        try:
+            print(f'{number1} {operation} {number2} = {number1 / number2}')
+        except ZeroDivisionError:
+            print('Ошибка. Деление на ноль')
+            
+            
+                                                      # Сформировать из введенного числа обратное по порядку входящих в него цифр и вывести на экран.
+# Например, если введено число 3486, надо вывести 6843.
+
+# Условие задачи было мной модифицировано (фактически с числами это работает также, не учтено только окончание числа
+# на 0, делается это 2 строчками кода через if - если что я знаю, как это делается):
+# Сделать реверс любой строки, приведенной на вход.
+
+import cProfile
+
+
+# Первая версия (изначальная)
+def reverse_1(string, length, s):
+    if length == 0:
+        return s
+    else:
+        count = 1
+        for let in string:
+            if count == length:
+                s += let
+                length -= 1
+                return reverse_1(string, length, s)
+            else:
+                count += 1
+
+
+# Вторая версия (без рекурсии, с использованием индексов, но без срезов)
+def reverse_2(string):
+    s = ''
+    ind = len(string)
+    for i in range(ind - 1, -1, -1):
+        s += string[i]
+    return s
+
+
+# Третья версия (максимальные возможности питона - использование срезов)
+def reverse_3(string):
+    return string[::-1]
+
+
+# string = '123456789' * 100
+# cProfile.run('reverse_1(string, len(string), "")')
+
+# cProfile.run("reverse_2('123456789' * 100)")
+
+# cProfile.run("reverse_3('123456789' * 100)")
+
+# Для копирования в терминал
+# python -m timeit -n 100 -s "import les_4_task_1" "les_4_task_1.reverse_1('123456789'*100, len('123456789'*1
+# 00), '')"
+
+# Результаты первой версии
+# 100 loops, best of 5: 35.2 msec per loop
+# 901/1    0.035    0.000    0.035    0.035 les_4_task_1.py:23(reverse_1)
+
+# Сложность первого алгоритма по моему мнению минимум - O(2^n). Возможно O(n*2^n).
+
+# Для копирования в терминал
+# python -m timeit -n 100 -s "import les_4_task_1" "les_4_task_1.reverse_2('123456789'*100)"
+
+# Результаты второй версии
+# 100 loops, best of 5: 156 usec per loop
+# 1    0.000    0.000    0.000    0.000 les_4_task_1.py:38(reverse_2)
+
+# Сложность второго алгоритма по моему мнению - O(n^2). Так как O(n) занимает проход по массиу и столько же занимает
+# конкатенация строк (в python это постоянное создание новой строки на основе двух предыдущих)
+
+# Для копирования в терминал
+# python -m timeit -n 100 -s "import les_4_task_1" "les_4_task_1.reverse_3('123456789'*100)"
+
+# Результаты третьей версии
+# 100 loops, best of 5: 2.72 usec per loop
+# 1    0.000    0.000    0.000    0.000 les_4_task_1.py:47(reverse_3)
+
+# Сложность третьего алгоритма - O(n)
+
+
+Найти сумму n элементов следующего ряда чисел: 1, -0.5, 0.25, -0.125,… Количество элементов(n) вводится с
+клавиатуры.
+"""
+import cProfile
+import sys
+import timeit
+
+sys.setrecursionlimit(4000)
+"""
+def elem_rec(n):
+    if n == 1:
+        return 1
+    elem = 1 / ((-2) ** (n - 1))
+    return elem + elem_rec(n - 1)
+
+
+
+ Вывести на экран коды и символы таблицы ASCII, начиная с символа под номером 32 и заканчивая 127-м включительно. 
+ Вывод выполнить в табличной форме: по десять пар «код-символ» в каждой строке.
+"""
+
+
+def row_construct(t, r):
+    pattern = '| {:<3}: {:<2} ' * r + '|'
+    return  pattern.format(*t)
+
+
+def rowchar(s, e, r):
+    row = []
+    result = ''
+    
+    for i in range(s, e+1):
+        row.append(i)
+        row.append(chr(i))
+        if len(row) >= r*2:
+            result += row_construct(tuple(row), r) + '\n'
+            row = []
+            
+    if len(row) > 0:
+        result += row_construct(tuple(row), len(row) // 2) 
+        
+    return result
+
+print(rowchar(32, 127, 10))
+
+
+ В программе генерируется случайное целое число от 0 до 100. Пользователь
+должен его отгадать не более чем за 10 попыток. После каждой неудачной попытки
+должно сообщаться больше или меньше введенное пользователем число, чем то, что
+загадано. Если за 10 попыток число не отгадано, то вывести загаданное число.'''
+
+
+from os import urandom as _urandom
+
+
+def random_number():
+    '''Функция генерирует случайное число от 0 до 100.
+    Случайное число возвращает функция _urandom из генератора псевдослучайных
+    чисел операционной системы. Побитовый сдвиг вправо увеличивает энтропию'''
+    random = int(int.from_bytes(_urandom(7), 'big')) >> 5
+    list = [n for n in range(0, 101)]
+    return list[random % 100]
+
+
+secret = random_number()
+i = 1
+while i <= 10:
+    print(f'Попытка №{i:2} из 10')
+    user_number = int(input('Введите число от 1 до 100: '))
+    if user_number == secret:
+        print('Загаданное число угадано')
+        break
+    elif user_number > secret:
+        print(f'Ваше число {user_number} больше загаданного')
+    else:
+        print(f'Ваше число {user_number} меньше загаданного')
+    i += 1
+if i > 10:
+    print(f'Не угадано! Загаданное число {secret}')
+    
+    
+    Напишите программу, доказывающую или проверяющую, что для множества
+натуральных чисел выполняется равенство: 1+2+...+n = n(n+1)/2,
+где n - любое натуральное число.'''
+
+
+def first(n):
+    if n == 1:
+        return n
+    elif n > 0:
+        return n + first(n-1)
+
+
+def second(n):
+    return n * (n + 1) // 2
+
+
+n = 1
+
+while True:
+    if first(n) == second(n):
+        print(f'Для n={n} - True')
+    else:
+        print(f'Для n={n} - False')
+        break
+    n += 1
+    
+    Напишите программу, которая на вход принимает два числа A и B, и возводит число А в целую степень B с помощью рекурсии.
+#Пример:
+#A = 3; B = 5 -> 243 (3⁵)
+# A = 2; B = 3 -> 8
+
+a = int(input("Введите число "))
+b = int(input("Введите степень числа(целое неотрицательно число) "))
+
+
+def func(a, b):
+    if b == 0:
+        return 1
+
+    return a * func(a, b - 1)
+
+
+print(func(a, b))
+
+
+Напишите рекурсивную функцию sum(a, b),
+# возвращающую сумму двух целых неотрицательных чисел.
+# Из всех арифметических операций допускаются только +1 и -1.
+# Также нельзя использовать циклы.
+# 2 2
+# 4'''
+
+def recsum(a, b):
+    if b == 0:
+        return a
+    return 1 + recsum(a, b - 1)
+
+print(recsum(3, 2))
+
